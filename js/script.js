@@ -17,11 +17,75 @@ var orange = "rgb(255, 100, 0)";
 var pink = "rgb(255, 0, 128)";
 var purple = "rgb(128, 0, 128)";
 var brown = "rgb(128, 51, 0)";
+//every color, this will be pruned
+var c1 = "rgb(1, 0, 103)";
+//var c2 = "rgb(213, 255, 0)"; neon yellow
+//var c3 = "rgb(255, 0, 86)";
+//var c4 = "rgb(14, 76, 161)";
+var c5 = "rgb(158, 0, 142)";
+var c6 = "rgb(255, 229, 2)";
+//var c7 = "rgb(0, 95, 57)";
+var c8 = "rgb(0, 255, 0)";
+var c9 = "rgb(149, 0, 58)";
+//var c10 = "rgb(255, 147, 126)";
+//var c11 = "rgb(164, 36, 0)"; light brown
+//var c12 = "rgb(0, 21, 68)"; navy blue
+//var c13 = "rgb(145, 208, 203)";
+var c14 = "rgb(98 14 0)";
+//var c15 = "rgb(107 104 130)"; grey with a hint of purple
+var c16 = "rgb(0 0 255)";
+//var c17 = "rgb(0 125 181)";
+var c18 = "rgb(106 130 108)";
+//var c19 = "rgb(0 174 126)";
+//var c20 = "rgb(194 140 159)"; very light purple
+var c21 = "rgb(190 153 112)";
+//var c22 = "rgb(0 143 156)";
+//var c23 = "rgb(95 173 78)";
+var c24 = "rgb(255 0 0)";
+//var c25 = "rgb(255 0 246)"; magenta
+var c26 = "rgb(255 2 157)";
+var c27 = "rgb(104 61 59)";
+//var c28 = "rgb(255 116 163)"; light pink
+//var c29 = "rgb(150 138 232)";
+//var c30 = "rgb(152 255 82)";
+//var c31 = "rgb(167 87 64)";
+//var c32 = "rgb(1 255 254)"; default lblue
+//var c33 = "rgb(255 238 232)"; cream
+var c34 = "rgb(254 137 0)";
+//var c35 = "rgb(189 198 255)"; light blue/ periwinkle
+//var c36 = "rgb(1 208 255)";
+//var c37 = "rgb(187 136 0)";
+//var c38 = "rgb(117 68 177)";
+//var c39 = "rgb(165 255 210)"; very light green/blue
+//var c40 = "rgb(255 166 254)";
+//var c41 = "rgb(119 77 0)";
+//var c42 = "rgb(122 71 130)";
+//var c43 = "rgb(38 52 0)";
+var c44 = "rgb(0 71 84)";
+var c45 = "rgb(67 0 44)";
+//var c46 = "rgb(181 0 255)";lightish purple
+//var c47 = "rgb(255 177 103)"; pastel orange
+//var c48 = "rgb(255 219 102)"; pastel yellow
+//var c49 = "rgb(144 251 146)"; quite light green
+var c50 = "rgb(126 45 210)";
+//var c51 = "rgb(189 211 147)"; greyish green
+//var c52 = "rgb(229 111 254)"; light purple
+//var c53 = "rgb(222 255 116)"; sick light green
+//var c54 = "rgb(0 255 120)";
+//var c55 = "rgb(0 155 255)";
+var c56 = "rgb(0 100 1)";
+//var c57 = "rgb(0 118 255)";
+//var c58 = "rgb(133 169 0)";
+//var c59 = "rgb(0 185 23)";
+//var c60 = "rgb(120 130 49)";
+var c61 = "rgb(0 255 198)";
+var c62 = "rgb(255 110 65)";
+var c63 = "rgb(232 94 190)";
 //not for guesses
 var white = "rgb(255, 255, 255)";
 var black = "rgb(0, 0, 0)";
 
-// (size, guesslimit, guesslength): (64, 10, 6); (48, 14, 8); (36, 18, 12);
+// (size, guesslimit, guesslength): (64, 10, 6); (48, 14, 8); (32, 20, 12);
 var size = 64;
 var guesslimit = 18;
 
@@ -33,7 +97,7 @@ var mouseY = 300;
 
 var codecolors = [];
 var colors = [];
-var colorsmaster = [red, orange, yellow, brown, green, blue, cyan, purple, pink];
+var colorsmaster = [c1, c5, c6, c8, c9, c14, c16, c18, c21, c24, c26, c27, c34, c44, c45, c50, c56, c61, c62, c63];
 var coloramount = 6;
 var guesslength = 4;
 
@@ -88,6 +152,7 @@ var colorSetup = function () {
 		colors[i] = colorsmaster[j];
 		colorsmaster.splice(j, 1);
 	}
+	
 	colors.push(black);
 };
 
@@ -109,7 +174,7 @@ var staticDisplay = function () {
 	ctx.fillStyle = black;
 	ctx.fillText("RESET", canvas.width - 37, canvas.height - 32);
 	ctx.fillText("BACK", canvas.width - 37, canvas.height - 102);
-	//dev numbers
+	//dev numbers (shifts text down for some reason)
 	/*ctx.fillStyle = "rgb(255, 255, 255)";
 	ctx.font = "12px Helvetica";
 	ctx.textAlign = "left";
@@ -307,7 +372,7 @@ var optionDisplay = function () {
 	//testing rectangle for back button hitbox
 	//ctx.fillRect((canvas.width / 2) - 40, canvas.height - 130, 80, 30);
 	//ctx.fillStyle = black;
-	ctx.fillText("OPTIONS", canvas.width / 2, 69);
+	ctx.fillText("SETTINGS", canvas.width / 2, 69);
 	ctx.font = "30px Helvetica";
 	ctx.fillText("BACK", canvas.width / 2, canvas.height - 105);
 };
@@ -317,7 +382,7 @@ var optionUpdate = function () {
 		gamestate = "menu";
 		if (guesslength > 8) {
 			size = 32;
-			guesslimit = 18;
+			guesslimit = 22;
 		} else if (guesslength > 6) {
 			size = 48;
 			guesslimit = 14;
@@ -331,7 +396,7 @@ var optionUpdate = function () {
 		gamestate = "menu";
 		if (guesslength > 8) {
 			size = 32;
-			guesslimit = 18;
+			guesslimit = 22;
 		} else if (guesslength > 6) {
 			size = 48;
 			guesslimit = 14;
@@ -359,13 +424,13 @@ var optionUpdate = function () {
 		coloramount--;
         wait = true;
 	} else if (37 in keysDown && optioncursor == 0 && coloramount == 2 && wait == false) { // Player holding left
-		coloramount = 9;
+		coloramount = 20;
         wait = true;
     }
-	if (39 in keysDown && optioncursor == 0 && coloramount < 9 && wait == false) { // Player holding right
+	if (39 in keysDown && optioncursor == 0 && coloramount < 20 && wait == false) { // Player holding right
 		coloramount++;
         wait = true;
-	} else if (39 in keysDown && optioncursor == 0 && coloramount == 9 && wait == false) { // Player holding right
+	} else if (39 in keysDown && optioncursor == 0 && coloramount == 20 && wait == false) { // Player holding right
 		coloramount = 2;
         wait = true;
     }
@@ -391,6 +456,8 @@ var optionRender = function () {
 	ctx.strokeStyle = white;
 	ctx.strokeRect(canvas.width / 2 - 160, 234 + (optioncursor * 156), 320, 32);
 	ctx.font = "30px Helvetica";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "center";
 	ctx.fillText("COLORS: " + coloramount, canvas.width / 2, 260);
 	ctx.fillText("GUESS LENGTH: " + guesslength, canvas.width / 2, canvas.height - 260);
 };
@@ -443,7 +510,7 @@ var reset = function () {
 	won = 0;
 	wait = false;
 	keysDown = {};
-	colorsmaster = [red, orange, yellow, brown, green, blue, cyan, purple, pink];
+	colorsmaster = [c1, c5, c6, c8, c9, c14, c16, c18, c21, c24, c26, c27, c34, c44, c45, c50, c56, c61, c62, c63];
 };
 
 // Handle keyboard controls I won't pretend I know what's going on here
