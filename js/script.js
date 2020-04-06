@@ -8,20 +8,31 @@ document.body.appendChild(canvas);
 var gamestate = "menu";
 
 //all the colors
-var red = "rgb(220, 0, 0)";
-var cyan = "rgb(0, 0, 153)";
-var blue = "rgb(0, 128, 255)";
-var green = "rgb(0, 175, 0)";
-var yellow = "rgb(255, 255, 0)";
-var orange = "rgb(255, 100, 0)";
-var pink = "rgb(255, 0, 128)";
-var purple = "rgb(128, 0, 128)";
-var brown = "rgb(128, 51, 0)";
+var c1 = "rgb(1, 0, 103)";
+var c5 = "rgb(158, 0, 142)";
+var c6 = "rgb(255, 229, 2)";
+var c8 = "rgb(0, 255, 0)";
+var c9 = "rgb(149, 0, 58)";
+var c14 = "rgb(98 14 0)";
+var c16 = "rgb(0 0 255)";
+var c18 = "rgb(106 130 108)";
+var c21 = "rgb(190 153 112)";
+var c24 = "rgb(255 0 0)";
+var c26 = "rgb(255 2 157)";
+var c27 = "rgb(104 61 59)";
+var c34 = "rgb(254 137 0)";
+var c44 = "rgb(0 71 84)";
+var c45 = "rgb(67 0 44)";
+var c50 = "rgb(126 45 210)";
+var c56 = "rgb(0 100 1)";
+var c61 = "rgb(0 255 198)";
+var c62 = "rgb(255 110 65)";
+var c63 = "rgb(232 94 190)";
 //not for guesses
 var white = "rgb(255, 255, 255)";
 var black = "rgb(0, 0, 0)";
 
-// (size, guesslimit, guesslength): (64, 10, 6); (48, 14, 8); (36, 18, 12);
+// (size, guesslimit, guesslength): (64, 10, 6); (48, 14, 8); (32, 20, 12);
 var size = 64;
 var guesslimit = 18;
 
@@ -33,7 +44,7 @@ var mouseY = 300;
 
 var codecolors = [];
 var colors = [];
-var colorsmaster = [red, orange, yellow, brown, green, blue, cyan, purple, pink];
+var colorsmaster = [c1, c5, c6, c8, c9, c14, c16, c18, c21, c24, c26, c27, c34, c44, c45, c50, c56, c61, c62, c63];
 var coloramount = 6;
 var guesslength = 4;
 
@@ -88,6 +99,7 @@ var colorSetup = function () {
 		colors[i] = colorsmaster[j];
 		colorsmaster.splice(j, 1);
 	}
+	
 	colors.push(black);
 };
 
@@ -109,7 +121,7 @@ var staticDisplay = function () {
 	ctx.fillStyle = black;
 	ctx.fillText("RESET", canvas.width - 37, canvas.height - 32);
 	ctx.fillText("BACK", canvas.width - 37, canvas.height - 102);
-	//dev numbers
+	//dev numbers (shifts text down for some reason)
 	/*ctx.fillStyle = "rgb(255, 255, 255)";
 	ctx.font = "12px Helvetica";
 	ctx.textAlign = "left";
@@ -307,7 +319,7 @@ var optionDisplay = function () {
 	//testing rectangle for back button hitbox
 	//ctx.fillRect((canvas.width / 2) - 40, canvas.height - 130, 80, 30);
 	//ctx.fillStyle = black;
-	ctx.fillText("OPTIONS", canvas.width / 2, 69);
+	ctx.fillText("SETTINGS", canvas.width / 2, 69);
 	ctx.font = "30px Helvetica";
 	ctx.fillText("BACK", canvas.width / 2, canvas.height - 105);
 };
@@ -317,7 +329,7 @@ var optionUpdate = function () {
 		gamestate = "menu";
 		if (guesslength > 8) {
 			size = 32;
-			guesslimit = 18;
+			guesslimit = 22;
 		} else if (guesslength > 6) {
 			size = 48;
 			guesslimit = 14;
@@ -331,7 +343,7 @@ var optionUpdate = function () {
 		gamestate = "menu";
 		if (guesslength > 8) {
 			size = 32;
-			guesslimit = 18;
+			guesslimit = 22;
 		} else if (guesslength > 6) {
 			size = 48;
 			guesslimit = 14;
@@ -359,13 +371,13 @@ var optionUpdate = function () {
 		coloramount--;
         wait = true;
 	} else if (37 in keysDown && optioncursor == 0 && coloramount == 2 && wait == false) { // Player holding left
-		coloramount = 9;
+		coloramount = 20;
         wait = true;
     }
-	if (39 in keysDown && optioncursor == 0 && coloramount < 9 && wait == false) { // Player holding right
+	if (39 in keysDown && optioncursor == 0 && coloramount < 20 && wait == false) { // Player holding right
 		coloramount++;
         wait = true;
-	} else if (39 in keysDown && optioncursor == 0 && coloramount == 9 && wait == false) { // Player holding right
+	} else if (39 in keysDown && optioncursor == 0 && coloramount == 20 && wait == false) { // Player holding right
 		coloramount = 2;
         wait = true;
     }
@@ -391,6 +403,8 @@ var optionRender = function () {
 	ctx.strokeStyle = white;
 	ctx.strokeRect(canvas.width / 2 - 160, 234 + (optioncursor * 156), 320, 32);
 	ctx.font = "30px Helvetica";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "center";
 	ctx.fillText("COLORS: " + coloramount, canvas.width / 2, 260);
 	ctx.fillText("GUESS LENGTH: " + guesslength, canvas.width / 2, canvas.height - 260);
 };
@@ -443,7 +457,7 @@ var reset = function () {
 	won = 0;
 	wait = false;
 	keysDown = {};
-	colorsmaster = [red, orange, yellow, brown, green, blue, cyan, purple, pink];
+	colorsmaster = [c1, c5, c6, c8, c9, c14, c16, c18, c21, c24, c26, c27, c34, c44, c45, c50, c56, c61, c62, c63];
 };
 
 // Handle keyboard controls I won't pretend I know what's going on here
