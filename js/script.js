@@ -29,6 +29,7 @@ var c61 = "rgb(0 255 198)";
 var c62 = "rgb(255 110 65)";
 var c63 = "rgb(232 94 190)";
 //not for guesses
+var red = "rgb(255 0 0)";
 var white = "rgb(255, 255, 255)";
 var black = "rgb(0, 0, 0)";
 
