@@ -29,13 +29,13 @@ var c61 = "rgb(0 255 198)";
 var c62 = "rgb(255 110 65)";
 var c63 = "rgb(232 94 190)";
 //not for guesses
-var red = "rgb(255 0 0)";
+var red = "rgb(255, 0, 0)";
 var white = "rgb(255, 255, 255)";
 var black = "rgb(0, 0, 0)";
 
 // (size, guesslimit, guesslength): (64, 10, 6); (48, 14, 8); (32, 20, 12);
 var size = 64;
-var guesslimit = 18;
+var guesslimit = 10;
 
 var cursorX = 0;
 var cursorY = 0;
@@ -94,6 +94,8 @@ var randomCode = function () {
 };
 
 var colorSetup = function () {
+  colors = [];
+  codecolors = [];
 	for (i = 0; i < coloramount; i++) {
 		j = Math.floor(Math.random() * (colorsmaster.length - 1));
 		codecolors[i] = colorsmaster[j];
@@ -212,32 +214,32 @@ var fullGuess = function () {
 var update = function () {
 	if (38 in keysDown && cursorY >= 1 && wait == false) { // Player holding up
 		cursorY--;
-        wait = true;
+    wait = true;
 	} else if (38 in keysDown && cursorY == 0 && wait == false) { // Player holding up
 		cursorY = (colors.length - 1);
-        wait = true;
-    }
+    wait = true;
+  }
 	if (40 in keysDown && cursorY <= (colors.length - 2) && wait == false) { // Player holding down
 		cursorY++;
-        wait = true;
+    wait = true;
 	} else if (40 in keysDown && cursorY == (colors.length - 1) && wait == false) { // Player holding down
 		cursorY = 0;
-        wait = true;
-    }
+    wait = true;
+  }
 	if (37 in keysDown && cursorX >= 1 && wait == false) { // Player holding left
 		cursorX--;
-        wait = true;
+    wait = true;
 	} else if (37 in keysDown && cursorX == 0 && wait == false) { // Player holding left
 		cursorX = (guesslength - 1);
-        wait = true;
-    }
+    wait = true;
+  }
 	if (39 in keysDown && cursorX <= (guesslength - 2) && wait == false) { // Player holding right
 		cursorX++;
-        wait = true;
+    wait = true;
 	} else if (39 in keysDown && cursorX == (guesslength - 1) && wait == false) { // Player holding right
 		cursorX = 0;
-        wait = true;
-    }
+    wait = true;
+  }
     if (13 in keysDown && cursorX <= (guesslength - 2) && wait == false) { // Player holding enter
 		guess[cursorX] = colors[cursorY];
 		cursorX++;
@@ -246,20 +248,20 @@ var update = function () {
 		guess[cursorX] = colors[cursorY];
 		cursorX = 0;
         wait = true;
-    }
+  }
 	if (32 in keysDown && wait == false && fullGuess() == true) { // Player holding space
 		guesses[guesses.length] = guess;
 		check();
-		guess = [];
+    guess = [];
 		arrayClear("guess");
 		guesscount++;
-        wait = true;
+    wait = true;
 	}
 };
 
 //render game objects
 var render = function () {
-    staticDisplay();
+  staticDisplay();
 	drawGuesses();
 	drawGuess();
 	if (guesscount < guesslimit && won == 0) {
@@ -276,7 +278,7 @@ var render = function () {
 
 var menuDisplay = function () {
 	ctx.fillStyle = black;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = white;
 	ctx.font = "69px Helvetica";
 	ctx.textAlign = "center";
@@ -312,7 +314,7 @@ var menuRender = function () {
 
 var optionDisplay = function () {
 	ctx.fillStyle = black;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = white;
 	ctx.font = "69px Helvetica";
 	ctx.textAlign = "center";
@@ -328,10 +330,10 @@ var optionDisplay = function () {
 var optionUpdate = function () {
 	if (13 in keysDown && optioncursor == 2 && wait == false) {
 		gamestate = "menu";
-		if (guesslength > 8) {
+		if (guesslength > 8 || coloramount > 13) {
 			size = 32;
 			guesslimit = 22;
-		} else if (guesslength > 6) {
+		} else if (guesslength > 6 || coloramount > 9) {
 			size = 48;
 			guesslimit = 14;
 		} else {
@@ -342,10 +344,10 @@ var optionUpdate = function () {
 	}
 	if (mouseX > ((canvas.width / 2) - 40) && mouseX < ((canvas.width / 2) + 40) && mouseY > (canvas.height - 130) && mouseY < (canvas.height - 100)) {
 		gamestate = "menu";
-		if (guesslength > 8) {
+		if (guesslength > 8 || coloramount > 13) {
 			size = 32;
 			guesslimit = 22;
-		} else if (guesslength > 6) {
+		} else if (guesslength > 6 || coloramount > 9) {
 			size = 48;
 			guesslimit = 14;
 		} else {
@@ -355,48 +357,48 @@ var optionUpdate = function () {
 	}
 	if (38 in keysDown && optioncursor >= 1 && wait == false) { // Player holding up
 		optioncursor--;
-        wait = true;
+    wait = true;
 	} else if (38 in keysDown && optioncursor == 0 && wait == false) { // Player holding up
 		optioncursor = 2;
-        wait = true;
-    }
+    wait = true;
+  }
 	if (40 in keysDown && optioncursor <= 1 && wait == false) { // Player holding down
 		optioncursor++;
-        wait = true;
+    wait = true;
 	} else if (40 in keysDown && optioncursor == 2 && wait == false) { // Player holding down
 		optioncursor = 0;
-        wait = true;
-    }
+    wait = true;
+  }
 //left right controls for colors
 	if (37 in keysDown && optioncursor == 0 && coloramount > 2 && wait == false) { // Player holding left
 		coloramount--;
-        wait = true;
+    wait = true;
 	} else if (37 in keysDown && optioncursor == 0 && coloramount == 2 && wait == false) { // Player holding left
 		coloramount = 20;
-        wait = true;
-    }
+    wait = true;
+  }
 	if (39 in keysDown && optioncursor == 0 && coloramount < 20 && wait == false) { // Player holding right
 		coloramount++;
-        wait = true;
+    wait = true;
 	} else if (39 in keysDown && optioncursor == 0 && coloramount == 20 && wait == false) { // Player holding right
 		coloramount = 2;
-        wait = true;
-    }
+    wait = true;
+  }
 //left right controls for guesslength
 	if (37 in keysDown && optioncursor == 1 && guesslength > 1 && wait == false) { // Player holding left
 		guesslength--;
-        wait = true;
+    wait = true;
 	} else if (37 in keysDown && optioncursor == 1 && guesslength == 1 && wait == false) { // Player holding left
 		guesslength = 12;
-        wait = true;
-    }
+    wait = true;
+  }
 	if (39 in keysDown && optioncursor == 1 && guesslength < 12 && wait == false) { // Player holding right
 		guesslength++;
-        wait = true;
+    wait = true;
 	} else if (39 in keysDown && optioncursor == 1 && guesslength == 12 && wait == false) { // Player holding right
 		guesslength = 1;
-        wait = true;
-    }
+    wait = true;
+  }
 };
 
 var optionRender = function () {
