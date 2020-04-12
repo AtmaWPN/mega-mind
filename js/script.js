@@ -5,7 +5,7 @@ canvas.width = 912;
 canvas.height = 676;
 document.body.appendChild(canvas);
 
-var version = "2.3.3";
+var version = "1.4.3";
 
 var gamestate = "menu";
 
