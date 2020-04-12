@@ -35,7 +35,7 @@ var black = "rgb(0, 0, 0)";
 
 // (size, guesslimit, guesslength): (64, 10, 6); (48, 14, 8); (32, 20, 12);
 var size = 64;
-var guesslimit = 10;
+var guesslimit = 9;
 
 var cursorX = 0;
 var cursorY = 0;
@@ -85,6 +85,16 @@ var canvasClick = function (event) {
 	mouseY = event.clientY - canvas.offsetTop + document.body.scrollTop;
 }
 
+var lineNumbers = function () {
+  for (i = 1; i <= guesslimit; i++) {
+    ctx.fillStyle = white;
+    ctx.font = "12px Helvetica";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "center";
+    ctx.fillText(i, size + Math.floor(2 * size/16), size/2 + Math.floor(size/16) + (size * (i - 1)));
+  }
+}
+
 //sets a random code
 var randomCode = function () {
 	code = [];
@@ -115,15 +125,16 @@ var staticDisplay = function () {
 		ctx.fillRect(Math.floor(size/16), Math.floor(size/16) + (i * size), size, size);
 	}
 	//reset button and back button
-    ctx.fillStyle = white;
+  ctx.fillStyle = white;
 	ctx.font = "16px Helvetica";
 	ctx.textAlign = "center";
 	ctx.textBaseline = "center";
-    ctx.fillRect(canvas.width - 70, canvas.height - 70, 66, 66);
-    ctx.fillRect(canvas.width - 70, canvas.height - 140, 66, 66);
+  ctx.fillRect(canvas.width - 70, canvas.height - 70, 66, 66);
+  ctx.fillRect(canvas.width - 70, canvas.height - 140, 66, 66);
 	ctx.fillStyle = black;
 	ctx.fillText("RESET", canvas.width - 37, canvas.height - 32);
 	ctx.fillText("BACK", canvas.width - 37, canvas.height - 102);
+  lineNumbers();
 	//dev numbers (shifts text down for some reason)
 	/*ctx.fillStyle = "rgb(255, 255, 255)";
 	ctx.font = "12px Helvetica";
@@ -138,12 +149,19 @@ var staticDisplay = function () {
 	ctx.fillText(mouseY, 450, 590);*/
 };
 
+var drawCode = function () {
+  for (i = 0; i < code.length; i++) {
+    ctx.fillStyle = code[i];
+    ctx.fillRect((size * i) + 10 + Math.floor(2 * size/16) + size, canvas.height - size, size, size);
+  }
+}
+
 //draws all past guesses
 var drawGuesses = function () {
 	for (i = 0; i < guesses.length; i++) {
 		for (j = 0; j < guesses[i].length; j++) {
 			ctx.fillStyle = guesses[i][j];
-			ctx.fillRect(Math.floor(2 * size/16) + size + (j * size), Math.floor(size/16) + (i * size), size, size);
+			ctx.fillRect(Math.floor(2 * size/16) + size + 10 + (j * size), Math.floor(size/16) + (i * size), size, size);
 		}
 	}
 };
@@ -152,7 +170,7 @@ var drawGuesses = function () {
 var drawGuess = function () {
 	for (i = 0; i < guess.length; i++) {
 		ctx.fillStyle = guess[i];
-		ctx.fillRect(Math.floor(2 * size/16) + size + (i * size), Math.floor(size/16) + (guesscount * size), size, size);
+		ctx.fillRect(Math.floor(2 * size/16) + size + 10 + (i * size), Math.floor(size/16) + (guesscount * size), size, size);
 	}
 };
 
@@ -191,7 +209,7 @@ var drawScores = function () {
 	for (i = 0; i < scores.length; i++) {
 		for (j = 0; j < scores[i].length; j++) {
 			ctx.fillStyle = scores[i][j];
-			ctx.fillRect(Math.floor(4 * size/16) + ((guesslength + 1) * size) + (j * size), Math.floor(2 * size/16) + (i * size), Math.floor(size * 3 / 4), Math.floor(size * 3 / 4));
+			ctx.fillRect(Math.floor(4 * size/16) + 10 + ((guesslength + 1) * size) + (j * size), Math.floor(2 * size/16) + (i * size), Math.floor(size * 3 / 4), Math.floor(size * 3 / 4));
 		}
 	}
 };
@@ -270,10 +288,13 @@ var render = function () {
 		ctx.strokeRect(Math.floor(size/16), Math.floor(size/16) + (cursorY * size), size - 1, size - 1);
 		ctx.strokeRect(Math.floor(size/16), Math.floor(size/16) + (cursorY * size), size, size);
 		//left/right selection cursor
-		ctx.strokeRect(Math.floor(2 * size/16) + size + (cursorX * size), Math.floor(size/16) + (guesscount * size), size - 1, size - 1);
-		ctx.strokeRect(Math.floor(2 * size/16) + size + (cursorX * size), Math.floor(size/16) + (guesscount * size), size, size);
+		ctx.strokeRect(Math.floor(2 * size/16) + size + 10 + (cursorX * size), Math.floor(size/16) + (guesscount * size), size - 1, size - 1);
+		ctx.strokeRect(Math.floor(2 * size/16) + size + 10 + (cursorX * size), Math.floor(size/16) + (guesscount * size), size, size);
 	}
 	drawScores();
+  if (won != 0) {
+    drawCode();
+  }
 };
 
 var menuDisplay = function () {
@@ -346,13 +367,13 @@ var optionUpdate = function () {
 		gamestate = "menu";
 		if (guesslength > 8 || coloramount > 13) {
 			size = 32;
-			guesslimit = 22;
+			guesslimit = 20;
 		} else if (guesslength > 6 || coloramount > 9) {
 			size = 48;
-			guesslimit = 14;
+			guesslimit = 13;
 		} else {
 			size = 64;
-			guesslimit = 10;
+			guesslimit = 9;
 		}
 	}
 	if (38 in keysDown && optioncursor >= 1 && wait == false) { // Player holding up
@@ -437,6 +458,7 @@ var main = function () {
 		if (mouseX >= (canvas.width - 70) && mouseY >= (canvas.height - 70)) {
 			reset();
 		}
+    //back button
 		if (mouseX >= (canvas.width - 70) && mouseY >= (canvas.height - 140) && mouseY <= (canvas.height - 70)) {
 			reset();
 			gamestate = "menu";
