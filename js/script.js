@@ -5,6 +5,8 @@ canvas.width = 912;
 canvas.height = 676;
 document.body.appendChild(canvas);
 
+var version = "2.3.3";
+
 var gamestate = "menu";
 
 //all the colors
@@ -126,14 +128,18 @@ var staticDisplay = function () {
 	}
 	//reset button and back button
   ctx.fillStyle = white;
+  ctx.strokeStyle = white;
 	ctx.font = "16px Helvetica";
 	ctx.textAlign = "center";
 	ctx.textBaseline = "center";
   ctx.fillRect(canvas.width - 70, canvas.height - 70, 66, 66);
   ctx.fillRect(canvas.width - 70, canvas.height - 140, 66, 66);
+  ctx.strokeRect(Math.floor(size/16), Math.floor(size/16), size, size * colors.length);
+  //ctx.strokeRect(10 + Math.floor(2 * size/16) + size, canvas.height - size, size * code.length, size);
 	ctx.fillStyle = black;
 	ctx.fillText("RESET", canvas.width - 37, canvas.height - 32);
 	ctx.fillText("BACK", canvas.width - 37, canvas.height - 102);
+  
   lineNumbers();
 	//dev numbers (shifts text down for some reason)
 	/*ctx.fillStyle = "rgb(255, 255, 255)";
@@ -230,6 +236,17 @@ var fullGuess = function () {
 
 // Update game objects
 var update = function () {
+  if (mouseX < (size + Math.floor(size/8)) && mouseY < (Math.floor(size/16) + ((coloramount + 1) * size))) {
+    cursorY = Math.floor((mouseY - Math.floor(size/16)) / size);
+    mouseX = canvas.width;
+    mouseY = 0;
+  }
+  if (mouseX > (size + Math.floor(size/8) + 10) && mouseX < (size + Math.floor(size/8) + 10 + size * guesslength) && mouseY > (Math.floor(size/16) + guesscount * size) && mouseY < (Math.floor(size/16) + guesscount * size + size)) {
+    cursorX = Math.floor((mouseX - (Math.floor(size/8) + 10 + size)) / size);
+    guess[cursorX] = colors[cursorY];
+    mouseX = canvas.width;
+    mouseY = 0;
+  }
 	if (38 in keysDown && cursorY >= 1 && wait == false) { // Player holding up
 		cursorY--;
     wait = true;
@@ -261,11 +278,11 @@ var update = function () {
     if (13 in keysDown && cursorX <= (guesslength - 2) && wait == false) { // Player holding enter
 		guess[cursorX] = colors[cursorY];
 		cursorX++;
-        wait = true;
+    wait = true;
 	} else if (13 in keysDown && cursorX == (guesslength - 1) && wait == false) { // Player holding enter
 		guess[cursorX] = colors[cursorY];
 		cursorX = 0;
-        wait = true;
+    wait = true;
   }
 	if (32 in keysDown && wait == false && fullGuess() == true) { // Player holding space
 		guesses[guesses.length] = guess;
@@ -312,19 +329,21 @@ var menuDisplay = function () {
 	ctx.font = "36px Helvetica";
 	ctx.fillText("START", canvas.width / 2, canvas.height / 2 + 10);
 	ctx.fillText("SETTINGS", canvas.width / 2, canvas.height / 2 + 60);
+  ctx.font = "16px Helvetica";
+  ctx.textAlign = "left";
+	ctx.textBaseline = "bottom";
+  ctx.fillText("VERSION " + version, 3, canvas.height - 16);
+  ctx.fillText("CREATED BY ALBIN DITTLI", 3, canvas.height);
 };
 
 var menuUpdate = function () {
 	if (mouseX > ((canvas.width / 2) - 58) && mouseX < ((canvas.width / 2) + 58) && mouseY > ((canvas.height / 2) - 18) && mouseY < ((canvas.height / 2) + 18)) {
 		gamestate = "game";
-		arrayClear("guess");
-		arrayClear("score");
-		colorSetup();
-		randomCode();
+		reset();
 	}
 	if (mouseX > ((canvas.width / 2) - 92) && mouseX < ((canvas.width / 2) + 92) && mouseY > ((canvas.height / 2) + 30) && mouseY < ((canvas.height / 2) + 66)) {
 		gamestate = "select";
-		mouseX = 0;
+		mouseX = canvas.width;
 		mouseY = 0;
 	}
 };
@@ -353,13 +372,13 @@ var optionUpdate = function () {
 		gamestate = "menu";
 		if (guesslength > 8 || coloramount > 13) {
 			size = 32;
-			guesslimit = 22;
+			guesslimit = 20;
 		} else if (guesslength > 6 || coloramount > 9) {
 			size = 48;
-			guesslimit = 14;
+			guesslimit = 13;
 		} else {
 			size = 64;
-			guesslimit = 10;
+			guesslimit = 9;
 		}
 		wait = true;
 	}
@@ -469,10 +488,9 @@ var main = function () {
 };
 
 var reset = function () {
-	randomCode();
 	cursorX = 0;
 	cursorY = 0;
-	mouseX = 0;
+	mouseX = canvas.width;
 	mouseY = 0;
 	guesscount = 0;
 	arrayClear("guess");
@@ -483,6 +501,8 @@ var reset = function () {
 	wait = false;
 	keysDown = {};
 	colorsmaster = [c1, c5, c6, c8, c9, c14, c16, c18, c21, c24, c26, c27, c34, c44, c45, c50, c56, c61, c62, c63];
+  colorSetup();
+  randomCode();
 };
 
 // Handle keyboard controls I won't pretend I know what's going on here
