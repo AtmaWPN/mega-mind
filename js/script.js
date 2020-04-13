@@ -330,10 +330,8 @@ var menuDisplay = function () {
 	ctx.fillText("START", canvas.width / 2, canvas.height / 2 + 10);
 	ctx.fillText("SETTINGS", canvas.width / 2, canvas.height / 2 + 60);
   ctx.font = "16px Helvetica";
-  ctx.textAlign = "left";
-	ctx.textBaseline = "bottom";
-  ctx.fillText("VERSION " + version, 3, canvas.height - 16);
-  ctx.fillText("CREATED BY ALBIN DITTLI", 3, canvas.height);
+  ctx.fillText("VERSION " + version, 60, canvas.height - 21);
+  ctx.fillText("CREATED BY ALBIN DITTLI", 107, canvas.height - 5);
 };
 
 var menuUpdate = function () {
@@ -359,9 +357,6 @@ var optionDisplay = function () {
 	ctx.font = "69px Helvetica";
 	ctx.textAlign = "center";
 	ctx.textBaseline = "center";
-	//testing rectangle for back button hitbox
-	//ctx.fillRect((canvas.width / 2) - 40, canvas.height - 130, 80, 30);
-	//ctx.fillStyle = black;
 	ctx.fillText("SETTINGS", canvas.width / 2, 69);
 	ctx.font = "30px Helvetica";
 	ctx.fillText("BACK", canvas.width / 2, canvas.height - 105);
